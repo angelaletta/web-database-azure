@@ -5,10 +5,22 @@ $db_pass = getenv('DB_PASS') ?: 'Cressencia17';
 $db_name = getenv('DB_NAME') ?: 'db_mahasiswa';
 $db_port = 3306;
 
-$mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name, $db_port);
+$mysqli = mysqli_init();
+mysqli_ssl_set($mysqli, NULL, NULL, NULL, NULL, NULL);
 
-if ($mysqli->connect_error) {
-    die("Connection failed: " . $mysqli->connect_error);
+$connected = mysqli_real_connect(
+    $mysqli,
+    $db_host,
+    $db_user,
+    $db_pass,
+    $db_name,
+    $db_port,
+    NULL,
+    MYSQLI_CLIENT_SSL
+);
+
+if (!$connected) {
+    die("Database connection failed: " . mysqli_connect_error());
 }
-
+?>
 
